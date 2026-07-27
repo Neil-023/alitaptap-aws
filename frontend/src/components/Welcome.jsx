@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera } from 'lucide-react';
-import logo from '../assets/logo.png'; // Make sure this path points to your actual logo
+import logo from '../assets/alitaptap_icon_final.svg'; // Make sure this path points to your actual logo
 import BackgroundLights from './BackgroundLights';
 import styles from './Welcome.module.css';
 

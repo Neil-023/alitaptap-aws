@@ -43,7 +43,7 @@
         font-weight: 400;
         margin: 0;
         letter-spacing: 0.5px;
-        font-family: 'Poppins', sans-serif; 
+        font-family: 'Poppins', sans-serif;
     }
 
     .subtitle {
@@ -54,21 +54,99 @@
         font-weight: 500;
     }
 
+    @media (min-width: 1024px) {
+        .bottomGlow {
+            position: absolute;
+            bottom: -600px !important;
+            /* Pushes it down so the curve is very gentle */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200vw !important;
+            /* Extra wide for a flatter horizon line */
+            min-width: 1000px;
+            /* Ensures a smooth curve even on small screens */
+            height: 800px;
+            border-radius: 50%;
+
+
+            background: radial-gradient(circle,
+                    rgba(250, 210, 115, 1) 0%,
+                    rgba(250, 210, 115, 1) 20%,
+                    /* Soft, bright gold center */
+                    rgba(250, 210, 115, 0.15) 50%,
+                    /* Same gold, purely fading out */
+                    rgba(10, 35, 66, 0) 70%
+                    /* Fades seamlessly into the background */
+                );
+
+            filter: blur(60px);
+            z-index: 1;
+            pointer-events: none;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .bottomGlow {
+            position: absolute;
+            bottom: -400px;
+            /* Pushes it down so the curve is very gentle */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150vw;
+            /* Extra wide for a flatter horizon line */
+            min-width: 1000px;
+            /* Ensures a smooth curve even on small screens */
+            height: 800px;
+            border-radius: 50%;
+
+
+            background: radial-gradient(circle,
+                    rgba(250, 210, 115, 1) 0%,
+                    rgba(250, 210, 115, 1) 20%,
+                    /* Soft, bright gold center */
+                    rgba(250, 210, 115, 0.15) 50%,
+                    /* Same gold, purely fading out */
+                    rgba(10, 35, 66, 0) 70%
+                    /* Fades seamlessly into the background */
+                );
+
+            filter: blur(60px);
+            z-index: 1;
+            pointer-events: none;
+        }
+    }
+    
+
     /* The Giant Blurry Glow */
     /* The Giant Blurry Glow */
-.bottomGlow {
-    position: absolute;
-    bottom: -250px; /* Pushes the bottom half of the circle off the screen */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;  /* Fixed width stops it from stretching on desktop */
-    height: 600px; /* Fixed height guarantees a perfect circle */
-    border-radius: 50%; /* Forces the container to be round */
-    background: radial-gradient(circle, rgb(232, 193, 110) 0%, rgb(127, 114, 86) 40%, rgba(10, 35, 66, 0) 70%);
-    filter: blur(30px); /* Increased blur slightly for a smoother gradient edge */
-    z-index: 1;
-    pointer-events: none;
-}
+    .bottomGlow {
+        position: absolute;
+        bottom: -400px;
+        /* Pushes it down so the curve is very gentle */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150vw;
+        /* Extra wide for a flatter horizon line */
+        min-width: 1000px;
+        /* Ensures a smooth curve even on small screens */
+        height: 800px;
+        border-radius: 50%;
+
+
+        background: radial-gradient(circle,
+                rgba(250, 210, 115, 1) 0%,
+                rgba(250, 210, 115, 1) 20%,
+                /* Soft, bright gold center */
+                rgba(250, 210, 115, 0.15) 50%,
+                /* Same gold, purely fading out */
+                rgba(10, 35, 66, 0) 70%
+                /* Fades seamlessly into the background */
+            );
+
+        filter: blur(60px);
+        z-index: 1;
+        pointer-events: none;
+    }
 
     /* Button Container & Styling */
     .buttonWrapper {

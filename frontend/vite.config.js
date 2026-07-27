@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-
   base: '/Alitaptap/',
   plugins: [
     react(),
@@ -37,6 +36,15 @@ export default defineConfig({
     })
   ],
   server: {
+    host: '0.0.0.0', // Exposes Vite outside the container
+    port: 5173,
+    watch: {
+      usePolling: true, // Forces file change detection on Docker mounts
+      interval: 100,
+    },
+    hmr: {
+      clientPort: 3003, // Matches host port 3003 from docker-compose.yml
+    },
     proxy: {
       '/api': {
         target: process.env.VITE_PROXY_TARGET || 'http://localhost:8000',

@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from google import genai
 from google.genai import types
+from mangum import Mangum
 from PIL import Image
 import io
 import os
@@ -109,3 +110,5 @@ def read_root():
 @app.get("/api/health")
 def health_check():
     return {"status": "healthy"}
+
+handler = Mangum(app, lifespan="off")

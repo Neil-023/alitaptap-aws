@@ -7,7 +7,7 @@ import Dashboard from './components/Dashboard.jsx'
 import Certificate from './components/Certificate.jsx'
 import './App.css'
 
-const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8003').replace(/\/$/, '')
+const API_BASE = (import.meta.env.VITE_API_URL || 'https://tpmh694935.execute-api.ap-southeast-2.amazonaws.com/prod').replace(/\/$/, '')
 
 // Temporary testing bypass: allows opening /dashboard without upload/AI response.
 const ENABLE_DASHBOARD_BYPASS =

@@ -7,10 +7,7 @@ from PIL import Image
 import io
 import os
 import json
-import certifi
 
-os.environ["SSL_CERT_FILE"] = certifi.where()
-client = genai.Client()
 
 app = FastAPI(title="FlameScore AI Backend")
 

@@ -110,5 +110,5 @@ def read_root():
 @app.get("/api/health")
 def health_check():
     return {"status": "healthy"}
-# for AWS
+# for AWSS
 handler = Mangum(app, lifespan="off")

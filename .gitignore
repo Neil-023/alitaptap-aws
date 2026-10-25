@@ -33,3 +33,14 @@ backend/.env
 # --- Docker ---
 # We usually keep docker-compose.yml but ignore local data volumes
 pgdata/
+
+# Local Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Local provider binaries and plugins directory
+.terraform/
+.terraform.d/
+
+# Crash logs
+crash.log

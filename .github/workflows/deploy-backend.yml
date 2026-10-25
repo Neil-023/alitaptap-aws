@@ -1,11 +1,10 @@
-name: Deploy Alitaptap Backend
+name: Deploy Alitaptap Backend to AWS Lambda
 
 on:
   push:
     branches: [ main, master ]
     paths:
       - 'backend/**'
-      - 'docker-compose.prod.yml'
   workflow_dispatch:
 
 concurrency:
@@ -13,39 +12,49 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  deploy-lambda:
+    name: Deploy Backend to AWS Lambda
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Copy project via SCP
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.ORACLE_HOST }}
-        username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        # We only copy the backend folder and the compose file
-        source: "docker-compose.prod.yml,backend"
-        target: "/home/ubuntu/alitaptap"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11" 
 
-    - name: Deploy via SSH
-      uses: appleboy/ssh-action@v1.2.0
-      with:
-        host: ${{ secrets.ORACLE_HOST }}
-        username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          set -euo pipefail
-          cd /home/ubuntu/alitaptap
-
-          # Inject secrets
-          cat > backend/.env <<EOF
-          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-          ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
-          ENVIRONMENT=production
-          EOF
-
-          # Use 'docker compose' directly now that the plugin is installed
-          docker compose -f docker-compose.prod.yml up -d --build --force-recreate --remove-orphans
+      - name: Install Dependencies and Package
+        run: |
+          cd backend
+          # Install dependencies into a 'package' folder
+          pip install -r requirements.txt -t ./package
+          # Copy your Python code into the package folder
+          cp -r ./*.py ./package/
           
-          docker image prune -f
+          # Zip everything together
+          cd package
+          zip -r ../deployment.zip .
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1 # Ensure this matches your Lambda region
+
+      - name: Update Lambda Code
+        run: |
+          aws lambda update-function-code \
+            --function-name alitaptap-backend \
+            --zip-file fileb://backend/deployment.zip
+
+          # Wait for the AWS Lambda code update to finish processing
+          aws lambda wait function-updated \
+            --function-name alitaptap-backend
+
+      - name: Update Lambda Environment Variables
+        run: |
+          aws lambda update-function-configuration \
+            --function-name alitaptap-backend \
+            --environment "Variables={GEMINI_API_KEY='${{ secrets.GEMINI_API_KEY }}',ENVIRONMENT='production'}"

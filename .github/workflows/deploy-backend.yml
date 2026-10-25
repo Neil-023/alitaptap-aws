@@ -2,9 +2,9 @@ name: Deploy Alitaptap Backend to AWS Lambda
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
     paths:
-      - 'backend/**'
+      - "backend/**"
   workflow_dispatch:
 
 concurrency:
@@ -22,16 +22,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11" 
+          python-version: "3.11"
 
       - name: Install Dependencies and Package
         run: |
           cd backend
-          # Install dependencies into a 'package' folder
-          pip install -r requirements.txt -t ./package
+          # Install dependencies into a 'package' folder with Lambda-compatible Linux binaries
+          pip install -r requirements.txt -t ./package --platform manylinux2014_x86_64 --only-binary=:all:
+
           # Copy your Python code into the package folder
           cp -r ./*.py ./package/
-          
+
           # Zip everything together
           cd package
           zip -r ../deployment.zip .

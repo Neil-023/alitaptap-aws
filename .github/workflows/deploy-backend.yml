@@ -58,4 +58,4 @@ jobs:
         run: |
           aws lambda update-function-configuration \
             --function-name alitaptap-backend \
-            --environment "Variables={GEMINI_API_KEY='${{ secrets.GEMINI_API_KEY }}',ENVIRONMENT='production'}"
+            --environment "Variables={GEMINI_API_KEY='${{ secrets.GEMINI_API_KEY }}',ENVIRONMENT='production',SSL_CERT_FILE='/etc/pki/tls/certs/ca-bundle.crt'}"
